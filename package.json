@@ -8,6 +8,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/geolocation": "^2.0.2",
     "@react-native-firebase/app": "^8.4.6",
     "@react-native-firebase/auth": "^9.3.1",
     "expo": "~39.0.2",

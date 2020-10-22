@@ -1,15 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button, Alert, TextInput } from 'react-native';
 
 import firebaseSetup from "./repo/firebaseSetup";
 import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
+import Geolocation from '@react-native-community/geolocation';
 
 export default function App() {
 
   const {auth} = firebaseSetup();
   const [confirm, setConfirm] = useState(null);
   const [code, setCode] = useState('');
+
+  useEffect(() => {
+    let navigator = {
+      geolocation : {
+        getCurrentPosition : Geolocation.getCurrentPosition
+      }
+    };
+    navigator.geolocation.getCurrentPosition(position => {
+      alert(position.coords.latitude);
+    }, 
+    error => {
+      alert(error.message);
+    },
+    {
+      enableHighAccuracy: true, timeout: 20000, maximumAge: 2000
+    })
+  });
 
   const signInWithPhoeNumber = async phoneNumber => {
     const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
