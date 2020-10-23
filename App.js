@@ -1,88 +1,69 @@
-import { StatusBar } from 'expo-status-bar';
-import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, Alert, TextInput } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { AsyncStorage } from 'react-native';
+import Loading from "./components/loading";
+import ConfirmModal from "./components/confirmModal";
+import ErrorModal from "./components/ErrorModal";
+import { Provider } from "react-redux";
+import store from "./store";
+import PhoneVerification from "./pages/PhoneVerification";
+import MapPage from "./pages/MapView";
+import UserDetail from "./pages/userDetails";
+import HowItWorks from "./pages/howItWorks";
+import AboutUs from "./pages/aboutUs";
+import Complaint from "./pages/complaint";
+import ContactUs from "./pages/contactUs";
+import History from "./pages/history";
+import Share from "./pages/share";
+import Sidebar from "./components/sidebar";
+import { getCurrentDate } from "./global/util";
 
-import firebaseSetup from "./repo/firebaseSetup";
-import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
-import Geolocation from '@react-native-community/geolocation';
+import { Scene, Router, Stack } from "react-native-router-flux";
 
 export default function App() {
 
-  const {auth} = firebaseSetup();
-  const [confirm, setConfirm] = useState(null);
-  const [code, setCode] = useState('');
+  const [screenType, setScreenType] = useState("");
 
   useEffect(() => {
-    let navigator = {
-      geolocation : {
-        getCurrentPosition : Geolocation.getCurrentPosition
-      }
-    };
-    navigator.geolocation.getCurrentPosition(position => {
-      alert(position.coords.latitude);
-    }, 
-    error => {
-      alert(error.message);
-    },
-    {
-      enableHighAccuracy: true, timeout: 20000, maximumAge: 2000
-    })
-  });
+    // getUserInfo();      
+    clearDriverNotif();
+  }, []);
 
-  const signInWithPhoeNumber = async phoneNumber => {
-    const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-    alert(JSON.stringify(confirmation));
-    setConfirm(confirmation);
+  getNowTime = () => {
+    return (new Date().getTime()).toString();
   }
 
-  const confirmCode = async () => {
-    try {
-        await confirm.confirm(code);
-        alert("SignedIn successfully");
-    }catch(err){
-      alert(JSON.stringify(err));
+  clearDriverNotif = async () => {
+      driverNotifdate = await AsyncStorage.getItem("driverNotifdate");
+      if(!driverNotifdate || ((getNowTime() - driverNotifdate) > 600000)) {
+        AsyncStorage.removeItem("driverNotif");
+      }
+      AsyncStorage.setItem("driverNotifdate", getNowTime());
+  }
+
+  getUserInfo = async () => {
+    let userInfo = await AsyncStorage.getItem("userInfo");
+    if(userInfo){
+      setScreenType("mapView")
     }
   }
 
-  return <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="Notconfirm" />
-      {/* <Button title="SignIn" onPress={() => {
-        signInWithPhoeNumber('+917022623975');
-        Alert.alert('Simple Button pressed')
-      }} />
-      <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-        onChangeText={text => setCode(text)}
-        value={code}
-      />
-      <Button title="Confirm" onPress={() => {
-        confirmCode();
-      }} /> */}
-      <MapView provider={PROVIDER_GOOGLE}
-      style={styles.map}
-      region={{
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.09,
-        longitudeDelta: 0.035
-      }}>
-      </MapView>
-
-  </View>
+  return (
+    <Provider store={store}>
+      <Router>
+        <Stack key="root">
+        <Scene
+          type="reset"
+          hideNavBar={true}
+          key="loginPage"
+          component={PhoneVerification}
+          title="LoginPage"
+        />
+        </Stack>
+      </Router>
+      <Loading />
+      <ConfirmModal />
+      <ErrorModal />
+      <Sidebar />
+    </Provider>
+  );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  map: {
-    height: 500,
-    borderWidth: 1,
-    borderColor: "#000",
-    width: 800
-  }
-});
