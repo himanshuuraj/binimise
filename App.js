@@ -74,6 +74,48 @@ export default function App() {
           component={UserDetail}
           title="UserDetail"
         />
+        <Scene
+          type="reset"
+          hideNavBar={true}
+          key="complaint"
+          component={Complaint}
+          title="Complaint"
+        />
+        <Scene
+          type="reset"
+          hideNavBar={true}
+          key="howItWorks"
+          component={HowItWorks}
+          title="HowItWorks"
+        />
+        <Scene
+          type="reset"
+          hideNavBar={true}
+          key="aboutUs"
+          component={AboutUs}
+          title="aboutUs"
+        />
+        <Scene
+          type="reset"
+          hideNavBar={true}
+          key="contactUs"
+          component={ContactUs}
+          title="contactUs"
+        />
+        <Scene
+          type="reset"
+          hideNavBar={true}
+          key="history"
+          component={History}
+          title="history"
+        />
+        <Scene
+          type="reset"
+          hideNavBar={true}
+          key="share"
+          component={Share}
+          title="Share"
+        />
         </Stack>
       </Router>
       <Loading />
