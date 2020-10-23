@@ -10,7 +10,7 @@ import { View, Text, Touch } from "./../ui-kit";
 import DriverMarker from "./driverMarker";
 import UserMarker from "./userMarker";
 import { Color } from '../global/util';
-import { updateUserLocation, updateDriverStatus, updateUserData } from "./../repo/repo";
+import { updateUserLocation, updateUserLocationInWard, updateDriverStatus, updateUserToken, updateUserData } from "./../repo/repo";
 
 export default () => {
 
@@ -46,8 +46,8 @@ export default () => {
     setIsDriver(userInfo?.userType === "driver");
     if(userInfo?.userType !== "driver") {
       setTimeout(async () => {
-        userInfo["firebaseToken"] = await AsyncStorage.getItem("firebaseToken");
-        updateUserData(userInfo);
+        let token = await AsyncStorage.getItem("token");
+        updateUserToken(userInfo, token);
       }, 3000);
     }
   }
@@ -83,6 +83,7 @@ export default () => {
     if(!isDriver && location.coords.latitude){
       updateUserLocation(location.coords.latitude, location.coords.longitude, userInfo.phoneNumber);
       setDataAction(location);
+      updateUserLocationInWard(userInfo, location.coords.latitude, location.coords.longitude);
     }
   }
 

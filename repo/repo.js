@@ -15,7 +15,7 @@ const updateUserLocation = (lat, long, phoneNumber) => {
 }
 
 const updateTruckLocationInAreaCode = (lat, long, areaCode, phoneNumber) => {
-    let locationRef = dbRef.child('areaCode/'+ areaCode + "/" + getCurrentDate() + "/" + phoneNumber + "/location/real_time");
+    let locationRef = dbRef.child('areaCode/'+ areaCode + "/" + getCurrentDate() + "/drivers/" + "/" + phoneNumber + "/location/real_time");
     let latLong = {
         lat : lat,
         long : long
@@ -61,12 +61,26 @@ const getAllAreas = () => {
 } 
 
 const updateUserInArea = userInfo => {
-    let usersRef = dbRef.child('areaCode/'+ userInfo.areaCode + "/profile/" + userInfo.phoneNumber);
+    let usersRef = dbRef.child('areaCode/' + userInfo.areaCode + "/" + getCurrentDate() + "/users/" + userInfo.phoneNumber);
     return usersRef.update(userInfo).then(() => {}).catch(() => {})
 }
 
+const updateUserToken = (userInfo, token) => {
+    let usersRef = dbRef.child('areaCode/' + userInfo.areaCode + "/" + getCurrentDate() + "/users/" + userInfo.phoneNumber);
+    return usersRef.update({token}).then(() => {}).catch(() => {})
+}
+
+const updateUserLocationInWard = (userInfo, lat, long) => {
+    let usersRef = dbRef.child('areaCode/' + userInfo.areaCode + "/" + getCurrentDate() + "/users/" + userInfo.phoneNumber + "/latLong");
+    let latLong = {
+        lat : lat,
+        long : long
+    }
+    return usersRef.update(latLong).then(() => {}).catch(() => {})
+}
+
 const updateDriverStatus = (areaCode, phoneNumber, status) => {
-    let usersRef = dbRef.child('areaCode/'+ areaCode + "/" + getCurrentDate() + "/" + phoneNumber + "/status")
+    let usersRef = dbRef.child('areaCode/'+ areaCode + "/" + getCurrentDate() + "/drivers" + "/" + phoneNumber + "/status")
     return usersRef.update({status}).then(() => {}).catch(() => {})
 }
 
@@ -78,5 +92,6 @@ const updateMapAreaCodeAndDriver = (userInfo) => {
 export { updateUserLocation, updateUserData, getUserData, 
          getAllAreas, updateTruckLocations, updateTruckHistory, 
          getDriverLocations, updateTruckLocationInAreaCode, updateUserInArea,
-         updateDriverStatus, updateMapAreaCodeAndDriver
+         updateDriverStatus, updateMapAreaCodeAndDriver, updateUserToken,
+         updateUserLocationInWard
     }

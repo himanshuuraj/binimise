@@ -15,29 +15,37 @@ import ContactUs from "./pages/contactUs";
 import History from "./pages/history";
 import Share from "./pages/share";
 import Sidebar from "./components/sidebar";
-import { getCurrentDate } from "./global/util";
-
 import { Scene, Router, Stack } from "react-native-router-flux";
+import OneSignal from 'react-native-onesignal';
 
 export default function App() {
 
   const [screenType, setScreenType] = useState("");
 
   useEffect(() => {
-    getUserInfo();      
-    clearDriverNotif();
+    OneSignal.setLogLevel(6, 0);
+    OneSignal.init("930d0241-ea95-4276-bca9-abeff2c58260", {kOSSettingsKeyAutoPrompt : false, kOSSettingsKeyInAppLaunchURL: false, kOSSettingsKeyInFocusDisplayOption:2});
+    OneSignal.inFocusDisplaying(2); // Controls what should happen if a notification is received while the app is open. 2 means that the notification will go directly to the device's notification center.
+    OneSignal.addEventListener('received', onReceived);
+    OneSignal.addEventListener('opened', onOpened);
+    OneSignal.addEventListener('ids', onIds);
+    getUserInfo(); 
   }, []);
 
-  getNowTime = () => {
-    return (new Date().getTime()).toString();
+  onReceived = (notification) => {
+    console.log("Notification received: ", notification);
   }
 
-  clearDriverNotif = async () => {
-      driverNotifdate = await AsyncStorage.getItem("driverNotifdate");
-      if(!driverNotifdate || ((getNowTime() - driverNotifdate) > 600000)) {
-        AsyncStorage.removeItem("driverNotif");
-      }
-      AsyncStorage.setItem("driverNotifdate", getNowTime());
+  onOpened = (openResult) => {
+    console.log('Message: ', openResult.notification.payload.body);
+    console.log('Data: ', openResult.notification.payload.additionalData);
+    console.log('isActive: ', openResult.notification.isAppInFocus);
+    console.log('openResult: ', openResult);
+  }
+
+  onIds = async (device) => {
+    // console.log('Device info: ', device);
+    AsyncStorage.setItem("token", device.userId);
   }
 
   getUserInfo = async () => {

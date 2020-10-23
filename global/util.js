@@ -2,8 +2,15 @@ import { Platform, Dimensions, StyleSheet } from "react-native";
 let { width, height } = Dimensions.get('window');
 
 export const getCurrentDate = () => {
-    let date = new Date().toLocaleDateString()
-    return date.split("/").join("-");
+    let date = new Date();
+    let dd = date.getDate();
+    let mm = date.getMonth();
+    mm += 1;
+    if(mm < 10) mm = "0" + mm;
+    let yy = date.getFullYear();
+    yy = yy - 2000;
+    date = mm + "-" + dd + "-" + yy;
+    return date;
 }
 
 width = Math.round(width);
