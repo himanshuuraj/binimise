@@ -1,7 +1,8 @@
 import firebase from "./../repo/firebase";
 import { getCurrentDate } from "./../global/util";
 
-let dbRef = {}; //firebase().database.ref();
+// alert(firebase().database);
+let dbRef = firebase().database().ref('/');
 
 const updateUserLocation = (lat, long, phoneNumber) => {
     

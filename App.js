@@ -24,7 +24,7 @@ export default function App() {
   const [screenType, setScreenType] = useState("");
 
   useEffect(() => {
-    // getUserInfo();      
+    getUserInfo();      
     clearDriverNotif();
   }, []);
 
@@ -57,6 +57,22 @@ export default function App() {
           key="loginPage"
           component={PhoneVerification}
           title="LoginPage"
+          initial={screenType != 'mapView'}
+        />
+        <Scene
+          type="reset"
+          hideNavBar={true}
+          key="MapView"
+          component={MapPage}
+          title="MapView"
+          initial={screenType == 'mapView'}
+        />
+        <Scene
+          type="reset"
+          hideNavBar={true}
+          key="UserDetail"
+          component={UserDetail}
+          title="UserDetail"
         />
         </Stack>
       </Router>

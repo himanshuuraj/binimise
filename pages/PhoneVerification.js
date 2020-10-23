@@ -19,7 +19,6 @@ let { width } = Dimensions.get('window');
 export default PhoneVerification = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [code, setCode] = useState('');
-  const [verificationId, setVerificationId] = useState(null);
   const [confirm, setConfirm] = useState(null);
 
   const dispatch = useDispatch()
@@ -89,7 +88,7 @@ export default PhoneVerification = () => {
     }
     if(code == "110011"){
       setDataAction({userInfo: { phoneNumber }})
-      // loginSuccess();
+      loginSuccess();
       return;
     }
     if(!code) {
@@ -103,7 +102,7 @@ export default PhoneVerification = () => {
     }
     try {
         await confirm.confirm(code);
-        // loginSuccess();
+        loginSuccess();
         setDataAction({
             errorModalInfo : {
                 showModal : true,

@@ -15,7 +15,7 @@ import { updateUserLocation, updateDriverStatus, updateUserData } from "./../rep
 export default () => {
 
   const [location, setLocation] = useState({coords: { latitude: 20.9517, longitude: 85.0985}});
-  const [isDriver, setIsDriver] = useState(false);
+  const [isDriver, setIsDriver] = useState(true);
   const [userInfo, setUserInfo] = useState({});
 
   let markerProps = {
