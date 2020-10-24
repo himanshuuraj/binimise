@@ -31,8 +31,7 @@ class ConfirmModal extends Component{
                 top : 0,
                 left : 0,
                 height,
-                width,
-                marginTop : StatusBar.currentHeight
+                width
             }}>
                 <View style={{ width: width - 48, borderRadius: 8, backgroundColor : 'white', 
                                 justifyContent : 'center',  padding: 16,

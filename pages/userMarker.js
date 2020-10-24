@@ -11,11 +11,6 @@ import { setData } from "./../redux/action";
 export default props => {
 
     const [driverLocations, setDriverLocations] = useState({});
-    let userCoords = useSelector(state => state.testReducer.coords) || {};
-
-    const dispatch = useDispatch();
-    const setDataAction = (arg) => dispatch(setData(arg));
-    var soundObject = "";
 
     useEffect(() => {
         getLocations();
@@ -29,43 +24,8 @@ export default props => {
             var data = response.val();
             if(!data)
                 return;
-            setDriverLocations(data);
-            calculateDriverLocations(data);
+            setDriverLocations(data?.drivers);
         });
-    }
-
-    calculateDriverLocations = async (drivers) => {
-        console.log(drivers, userCoords);
-        if(!userCoords.longitude || !props.userInfo.firebaseToken)
-            return;
-        for(let key in drivers) {
-            let value = drivers[key];
-            let driverNotifReceived = await AsyncStorage.getItem("driverNotif");
-            driverNotifReceived = JSON.parse(driverNotifReceived) || [];
-            if(!driverNotifReceived.includes(key)){
-                let distance = distanceBetweenLatLong(userCoords.latitude, userCoords.longitude, 
-                    value.location.real_time.lat, value.location.real_time.long);
-                if(distance < 0.3) {
-                    setDataAction({confirmModalInfo:{
-                        showModal : true,
-                        title : "Show Audio",
-                        primaryText : "Close",
-                        primaryAction : async () => {
-                            setDataAction({
-                                confirmModalInfo:{ showModal: false}
-                            });
-                            await soundObject.unloadAsync();
-                        },
-                        secondaryText : "",
-                        secondaryAction : ""
-                    }});
-                    let token = await AsyncStorage.getItem("firebaseToken");
-                    sendPushNotification(token);
-                    driverNotifReceived.push(key);
-                    AsyncStorage.setItem("driverNotif", JSON.stringify(driverNotifReceived));
-                }
-            }
-        }
     }
 
     if(driverLocations === null || Object.keys(driverLocations).length === 0)

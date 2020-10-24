@@ -29,7 +29,7 @@ export default () => {
     if(!sidebar.show)
       return null;
 
-    return <View a le={0} to={0} w={width} h={height} mt={StatusBar.currentHeight} c={Color.backgroundModalColor}>
+    return <View a le={0} to={0} w={width} h={height} c={Color.backgroundModalColor}>
         <View style={{
                 height: '100%',
                 backgroundColor : "#bbb",

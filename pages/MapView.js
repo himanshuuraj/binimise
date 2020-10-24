@@ -103,7 +103,7 @@ export default () => {
 
   return (
     <View >
-      <View row ai mt={StatusBar.currentHeight} c={"#fff"} ai w={"100%"} h={60} >
+      <View row ai c={"#fff"} ai w={"100%"} h={60} >
         <Header />
         <Text s={18} t={"Welcome"} />
         {

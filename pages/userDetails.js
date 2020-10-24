@@ -129,7 +129,7 @@ export default () => {
         </View>;
     }
 
-    return <View mt={StatusBar.currentHeight} pl={16} pr={16}>
+    return <View pl={16} pr={16}>
         {
             userInfo?.name ? <View row ai c={"#fff"} ai w={"100%"} h={60} >
                 <Header />

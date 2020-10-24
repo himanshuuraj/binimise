@@ -13,7 +13,7 @@ export default () => {
             return null;
         return (
             <View a to={0} le={0} zi={999} jc ai 
-                h={height} w={width} mt={StatusBar.currentHeight}
+                h={height} w={width}
                 c = {Color.backgroundModalColor}>
                 <View jc ai bw={1} w={200} h={120} c={"#bbbbbb"}
                     bc={Color.themeColor} br={8}>

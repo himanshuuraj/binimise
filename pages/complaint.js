@@ -18,7 +18,7 @@ export default () => {
   }
 
   return (
-    <View mt={StatusBar.currentHeight}>
+    <View>
       <Header />
       <View jc h={'90%'}>
         <View bw={1} br={8} mt={32} ml={16} ph={16} w={width - 32} bc={"#bbb"}>
